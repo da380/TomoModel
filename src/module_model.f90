@@ -740,7 +740,6 @@ contains
     dvsr = 0.0_dp
 
     ! Read in S2/40RTS
-!    model = '../data/S20RTS.sph'
     call build_hetmod_vs(model)
 
     allocate(si_spat_node(ngl,nphi,ntau,ngll,nspec))
@@ -868,24 +867,9 @@ contains
        llen = llen-1
     end do
     read(abuf,'(10x,i5)') lmaxmod
-    num = llen-15-1-(lmaxmod+1)-1-3-1
-    
-    ! This doesn't work
+    num = llen-15-1-(lmaxmod+1)-1-3-1    
 
     nstr = num
-
-    !if(llen > 15) then
-    !   idef = 0
-    !   write(form,'(''(16x,'',i3,''i1,1x,i3,1x,80i1)'')') lmax+1
-    !   read(abuf,form) (lask(i+1),i=0,lmaxmod),nstr,(mask(i),i=1,num)
-       !print *, lask(1:lmaxmod+1),nstr,mask(1:num)
-    !   if(num /= nstr) stop 'error 1 in heread'
-    !else
-    !   idef = 1
-    !   do  i = 0,lmax
-    !      lask(i+1) = 1
-    !   end do
-    !end if
 
     lask(:) = 1
     mask(1:3) = 0
@@ -1102,14 +1086,7 @@ contains
     dlnvs = 0.0_dp
     dvsvs_lm = 0.0_dp
 
-    !print *, rx
-
-    !do k = 4,nstr
-    !   print *, rx,k,splh(k-4,rx)
-    !end do
-
     ! begin loop over spherical harmonic coefficients
-    ! Negative m???????
     lmcur = 2
     do l = 1,lmaxmod
        do m = 0,l
