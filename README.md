@@ -1,5 +1,7 @@
 # TomoModel
 
+## Overview
+
 ReadS20RTS takes in models in the S20RTS/S40RTS format and prints out to an ascii file the spherical harmonic coefficients for the model at a discrete set of radii. 
 
 Inputs: [Name of spherical reference model in deck format] [Name of 3D model file in S20RTS format] [name for the output file]
@@ -17,3 +19,9 @@ $$
 
 where $L$ is the maximum degree of the model (e.g. 20 for S20RTS). Note that the coefficients are for complex fully normalised spherical harmonics as defined in Appendix B of Dahlen \& Tromp (1998). Such spherical harmonics
 do include to Condon-Shortley Phase within their definition. 
+
+## Installation
+
+Clone the repository with:
+
+git clone 
