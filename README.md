@@ -14,3 +14,6 @@ For each radius the spherical harmonic coefficients are listed in the following 
 $$
 \mathrm{Re} f_{00} \quad \mathrm{Re} f_{1-1} \quad \mathrm{Re} f_{10} \quad  \mathrm{Re} f_{11} \quad  \mathrm{Re} f_{2-2} \quad \dots \mathrm{Re} f_{LL} \quad \mathrm{Im} f_{00} \quad \mathrm{Im} f_{1-1} \quad \dots
 $$
+
+where $L$ is the maximum degree of the model (e.g. 20 for S20RTS). Note that the coefficients are for complex fully normalised spherical harmonics as defined in Appendix B of Dahlen \& Tromp (1998). Such spherical harmonics
+do include to Condon-Shortley Phase within their definition. 
