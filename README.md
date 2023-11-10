@@ -10,6 +10,8 @@ Within the data directory examples of the two input files can be found (specific
 
 radius (m)  | reference density (kg / m^{3}) | reference shear velocity (m / s) | spherical harmonic coefficients for dlnvs 
 
+Radii can be repeated to indicate discontinuities within the parameters.
+
 For each radius the spherical harmonic coefficients are listed in the following order, denoting the function by $f$ for simplicity:
 
 
