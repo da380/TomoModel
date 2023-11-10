@@ -8,9 +8,9 @@ Within the data directory examples of the two input files can be found (specific
 
 radius (m)  | reference density (kg / m^{3}) | reference shear velocity (m / s) | spherical harmonic coefficients for dlnvs 
 
-For each radius the spherical harmonic coefficients are listed in the following order, denoting the function by f for simplicity:
+For each radius the spherical harmonic coefficients are listed in the following order, denoting the function by $f$ for simplicity:
 
 
 $$
-\mathrm{Re} f_{00} \quad \mathrm{Re} f_{1-1} \quad \mathrm{Re} f_{10} \quad  \mathrm{Re} f_{11} \quad  \mathrm{Re} f_{2-2} \quad \dots 
+\mathrm{Re} f_{00} \quad \mathrm{Re} f_{1-1} \quad \mathrm{Re} f_{10} \quad  \mathrm{Re} f_{11} \quad  \mathrm{Re} f_{2-2} \quad \dots \mathrm{Re} f_{LL} \quad \mathrm{Im} f_{00} \quad \mathrm{Im} f_{1-1} \quad \dots
 $$
