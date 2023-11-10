@@ -12,5 +12,5 @@ For each radius the spherical harmonic coefficients are listed in the following 
 
 
 $$
-\mathrm{Re} f_{00}
+\mathrm{Re} f_{00} \quad \mathrm{Re} f_{1-1} \quad \mathrm{Re} f_{10} \quad  \mathrm{Re} f_{11} \quad  \mathrm{Re} f_{2-2} \quad \dots 
 $$
