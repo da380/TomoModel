@@ -11,6 +11,6 @@ radius (m)  | reference density (kg / m^{3}) | reference shear velocity (m / s) 
 For each radius the spherical harmonic coefficients are listed in the following order, denoting the function by f for simplicity:
 
 
-$
+$$
 \mathrm{Re} f_{00}
-$
+$$
