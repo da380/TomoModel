@@ -6,4 +6,10 @@ Inputs: [Name of spherical reference model in deck format] [Name of 3D model fil
 
 Within the data directory examples of the two input files can be found (specifically, PREM and S20RTS). Each line of the output file contains the following:
 
-radius (m)  | reference density (kg / m^{3}) | reference shear velocity (m / s) | spherical harmonic coefficients for dlnvs in the manner detailed below.   
+radius (m)  | reference density (kg / m^{3}) | reference shear velocity (m / s) | spherical harmonic coefficients for dlnvs 
+
+For each radius the spherical harmonic coefficients are listed in the following order, denoting the function by f for simplicity:
+
+*
+\mathrm{Re} f_{00}
+*
