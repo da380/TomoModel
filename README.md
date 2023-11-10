@@ -24,4 +24,14 @@ do include to Condon-Shortley Phase within their definition.
 
 Clone the repository with:
 
-git clone 
+git clone https://github.com/da380/TomoModel.git
+
+Configure the build using:
+
+cmake -S [Souce directory] -B [build directory]
+
+Compile using:
+
+cmake --build [build directory]
+
+The executable is ReadS20RTS which is located in "bin" within the build directory. Example input files are found in "data" within the build directory. 
