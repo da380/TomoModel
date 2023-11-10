@@ -646,6 +646,101 @@ contains
   end subroutine visc_3d
 
 
+  subroutine write_dvs(model,io)
+    use module_fourier
+    use module_spline
+
+    implicit none
+
+    character(len=*), intent(in) :: model
+    integer(i4b), intent(in) :: io
+    
+    integer(i4b) :: ilayer,ispec,inode,igl,iphi,iphih
+    real(dp) :: rr,rrhovs,rt,alpha,lat,long,rvs,rrho
+    real(sp) :: rx
+    complex(dpc), dimension(ngl,nphi) :: dlnvs,dlnrho,dT
+
+    struct3d = .true.
+
+    ! Set S2/40RTS parameters
+    mxleny = (lmax+1)**2
+    mxmdll = mxleny*mxparm
+    allocate(dvsr(0:lmax,2*lmax+1,mxparm))
+    dvsr = 0.0_dp
+
+    ! Read in S2/40RTS
+    call build_hetmod_vs(model)
+
+    allocate(si_spat_node(ngl,nphi,ntau,ngll,nspec))
+    si_spat_node = 0.0_dp
+
+    ! Calculate cubic splines for dlnrho/dlnvs
+    call spline(r_rhovs,f_rhovs,big,big,cs_rhovs)
+
+    si_spat_node = 0.0_dp
+
+    smax = 0.0_dp
+
+    do ilayer = 1,nsect
+       if (sect_ind(3,ilayer) /= 2) cycle
+       do ispec = sect_ind(1,ilayer),sect_ind(2,ilayer)
+          do inode = 1,ngll
+
+             rr = r_node(inode,ispec)
+             rrho = rho_node(inode,ispec)
+             rvs = sqrt(mu_node(inode,ispec)/rrho)
+
+                        
+             ! Assuming there's only one viscoelastic layer
+             rx = (2.0_dp*rr  - r_node(1,sect_ind(1,ilayer)) - r_moho) &
+                  /(r_moho - r_node(1,sect_ind(1,ilayer)))
+
+
+             call get_dvsvs(rx,dlnvs,io,rr,rrho,rvs)
+             
+             ! Calculate delta ln rho
+             rrhovs = splint(r_rhovs,f_rhovs,cs_rhovs,rr)
+             dlnrho = rrhovs*dlnvs
+
+             ! Calculate delta T
+             rt = rr/tmantle
+             alpha = aconst*(a0 + rt*(a1 + rt*(a2 + rt*a3)))
+             dT = -dlnrho/alpha
+
+
+             do iphi = 1,nphi
+                if (iphi <= 2*lmax) then
+                   iphih = iphi + 2*lmax
+                else
+                   iphih = iphi - 2*lmax
+                end if
+                do igl = 1,ngl
+                   !if (rr*r_norm < 5701000) then
+                   si_spat_node(igl,iphi,1,inode,ispec) = si_node(1,inode,ispec) &
+                                                          *exp(fx_bkg*real(dT(igl,iphih)))
+                   !else if ((rr*r_norm == 5701000) .and. (inode == ngll)) then
+                   !   si_spat_node(igl,iphi,1,inode,ispec) = si_node(1,inode,ispec) &
+                   !                                          *exp(fx_bkg*real(dT(igl,iphih)))
+                   !else
+                   !   si_spat_node(igl,iphi,1,inode,ispec) = si_node(1,inode,ispec)
+                   !end if
+                   if (real(si_spat_node(igl,iphi,1,inode,ispec)) > smax) &
+                        smax = si_spat_node(igl,iphi,1,inode,ispec)
+                end do
+             end do
+             
+          end do
+       end do
+    end do
+
+!  print *, t_norm*sec2yr/smax
+
+
+  end subroutine write_dvs
+
+
+  
+
   subroutine visc_3d_none
 
     use module_fourier
@@ -727,7 +822,7 @@ contains
 
     character(len=*), intent(in) :: model
     integer(i4b) :: ilayer,ispec,inode,igl,iphi,io,iphih,io2
-    real(dp) :: rr,rrhovs,rt,alpha,lat,long
+    real(dp) :: rr,rrhovs,rt,alpha,lat,long,vs
     real(sp) :: rx
     complex(dpc), dimension(ngl,nphi) :: dlnvs,dlnrho,dT
 
@@ -760,11 +855,12 @@ contains
              rr = r_node(inode,ispec)
                         
              ! Assuming there's only one viscoelastic layer
-             rx = (2.0_dp*rr - r_node(1,sect_ind(1,ilayer)) - r_moho) &
+             rx = (2.0_dp*rr  - r_node(1,sect_ind(1,ilayer)) - r_moho) &
                   /(r_moho - r_node(1,sect_ind(1,ilayer)))
 
 
              call get_dvsvs(rx,dlnvs)
+
              
              ! Calculate delta ln rho
              rrhovs = splint(r_rhovs,f_rhovs,cs_rhovs,rr)
@@ -801,7 +897,7 @@ contains
        end do
     end do
 
-  print *, t_norm*sec2yr/smax
+!  print *, t_norm*sec2yr/smax
 
 
   end subroutine visc_3d_from_vs
@@ -963,8 +1059,7 @@ contains
        do i = 0,lmax
           do j = 1,2*i+1
              ind = ind+1
-             dvsr(i,j,k) = mfac*anmdl(leny*(k-1)+ind) ! actually dvs/vs
-    
+             dvsr(i,j,k) = mfac*anmdl(leny*(k-1)+ind) ! actually dvs/vs    
           end do
        end do
     end do
@@ -1071,14 +1166,16 @@ contains
   end subroutine splhsetup
 
 
-  subroutine get_dvsvs(rx,dlnvs)
+  subroutine get_dvsvs(rx,dlnvs,io,rr,rrho,rvs)
 
     implicit none
 
     real(sp), intent(in) :: rx
     complex(dpc), dimension(ngl,nphi), intent(out) :: dlnvs
-
-    integer(i4b) :: lmcur,l,m,k,iphi,igl,io
+    integer(i4b), intent(in), optional :: io
+    real(dp), intent(in), optional :: rr,rrho,rvs
+    
+    integer(i4b) :: lmcur,l,m,k,iphi,igl,lout
     real(dp) :: dvsrel,dvsrel2
     complex(dpc) :: cdvs
     complex(dpc), dimension((lmax+1)**2) :: dvsvs_lm
@@ -1125,6 +1222,11 @@ contains
        end do
        lmcur = lmcur + 2*l + 1
     end do
+
+    if(present(io) .and. present(rr) .and. present(rrho) .and. present(rvs)) then
+       write(io,*) rr * r_norm , rrho * rho_norm, rvs * vel_norm, & 
+            real(dvsvs_lm(1:(lmaxmod+1)**2)),imag(dvsvs_lm(1:(lmaxmod+1)**2))
+    end if
 
     call fun_from_coefs(dvsvs_lm,dlnvs)
 

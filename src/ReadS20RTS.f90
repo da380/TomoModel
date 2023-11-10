@@ -10,7 +10,7 @@ program ReadS20RTS
 
   logical(lgt) :: ltmp
   
-  character(len=256) :: spherical_model_file,lateral_model_file
+  character(len=256) :: spherical_model_file,lateral_model_file,lateral_model_file_out
   
   integer(i4b) :: narg,io
 
@@ -19,17 +19,14 @@ program ReadS20RTS
   ! set the normalisation parameters
   call set_parameters
 
-
   ! number of input arguments 
   narg = command_argument_count()
 
   ! if needed, display input info
-  if(narg == 0 .or. narg /= 2) then
-     print *, 'inputs: [spherical model] [3D model file]'
+  if(narg == 0 .or. narg /= 3) then
+     print *, 'inputs: [spherical model] [3D model file in] [3D model file out]'
      stop
   end if
-
-
 
   ! read in the spherical model file
   call get_command_argument(1,spherical_model_file)
@@ -55,8 +52,11 @@ program ReadS20RTS
   call get_command_argument(2,lateral_model_file)
   inquire(file=trim(lateral_model_file),exist=ltmp)
   if(.not.ltmp) stop 'can''t find 3D model file'
-  call visc_3d_from_vs(lateral_model_file)
 
+  call get_command_argument(3,lateral_model_file_out)
+  open(newunit = io, file = trim(lateral_model_file_out))
+  call write_dvs(lateral_model_file,io)
+  close(io)
 
   
 end program ReadS20RTS
