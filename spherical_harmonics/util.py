@@ -100,6 +100,31 @@ def simpson_integrate(y, x, axis=0):
     integral = simpson(y, x, axis=axis)
     return integral
 
+def integrate(l, density_sh_lm, radius_arr, kernel):
+    """
+
+    :param int l: Degree to evaluate integral at.
+    :param np.ndarray density_sh_lm: 4D array of spherical harmonic coefficients evaluated at
+    a degree. (radial points, +-order, l_max+1)
+    :param np.ndarray radius_arr: 1D array of radius values.
+    :param np.ndarray kernel: 1D array of kernel as function of depth.
+
+    :returns np.ndarray integral: 3D array of integrated density anomalies x kernel. (radial
+    points, +-order, l_max+1
+    """
+
+    density_sh_l = density_sh_lm[:, :, l, :]
+    # integrand is (radial_points x (2*l_max + 1))
+    integrand = np.concatenate(
+                        (density_sh_l[:, 0, :] * kernel.reshape(-1, 1),
+                               density_sh_l[:, 1, :] * kernel.reshape(-1, 1)),
+                               axis=1
+                               )
+
+    # integrate along the radius for each order
+    integral = simpson(integrand, radius_arr, axis=0)
+    return integral
+
 def generate_test_coeffs(num_radial, l_max):
     """
     Returns a 3D np array of test coefficients of the form
