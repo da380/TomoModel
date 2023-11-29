@@ -98,6 +98,8 @@ def calculate_observable(observable: str, l: int, l_max:int, density_anomaly_sh_
         The observable to calculate.
     l : int
         The degree to calculate the observable at.
+    l_max : int
+        The maximum degree of the model.
     density_anomaly_sh_lm : np.ndarray(dtype=float, ndim=4)
         Array of density anomaly spherical harmonic coefficients.
     radius_arr : np.ndarray(dtype=float, ndim=1)
@@ -110,6 +112,28 @@ def calculate_observable(observable: str, l: int, l_max:int, density_anomaly_sh_
     integral : np.ndarray(dtype=float, ndim=1)
         Array of integrated density anomalies x kernel.
     """
+    assert observable in ['surftopo', 'geoid', 'gravity', 'cmbtopo'], (f"Observable {observable} not recognised.")
+
+    rho_uppermost_mantle = 3380
+    rho_water = 1030
+    rho_lowermost_mantle = 5570
+    rho_uppermost_outer_crust = 9900
+    G = 6.67408e-11
+    g = 9.81
+    R = 6371e3
+
+    match observable:
+        case 'surftopo':
+            init_factor = 1 / (rho_uppermost_mantle - rho_water)
+        case 'geoid':
+            init_factor = 4 * np.pi * G * R / ((2 * l + 1) * g)
+        case 'gravity':
+            init_factor = 1
+        case 'cmbtopo':
+            init_factor = -1 / (rho_lowermost_mantle - rho_uppermost_outer_crust)
+        case _:
+            raise ValueError(f"Observable {observable} not recognised.")
+
     assert_shape(density_anomaly_sh_lm, (len(radius_arr), 2, l_max+1, l_max+1))
     density_sh_l = density_anomaly_sh_lm[:, :, l, :]
     # integrand is (radial_points x (2*l_max + 1))
@@ -120,6 +144,6 @@ def calculate_observable(observable: str, l: int, l_max:int, density_anomaly_sh_
                                )
 
     # integrate along the radius for each order
-    integral = scipy.integrate.simpson(integrand, radius_arr, axis=0)
+    integral = init_factor * scipy.integrate.simpson(integrand, radius_arr, axis=0)
     assert_shape(integral, (2 * (l_max + 1),))
     return integral
