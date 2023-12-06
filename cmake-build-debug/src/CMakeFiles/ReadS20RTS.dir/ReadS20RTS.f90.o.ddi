@@ -1,0 +1,30 @@
+{
+	"revision" : 0,
+	"rules" : 
+	[
+		{
+			"outputs" : [],
+			"primary-output" : "src/CMakeFiles/ReadS20RTS.dir/ReadS20RTS.f90.o",
+			"provides" : [],
+			"requires" : 
+			[
+				{
+					"logical-name" : "module_fourier.mod"
+				},
+				{
+					"logical-name" : "module_function.mod"
+				},
+				{
+					"logical-name" : "module_model.mod"
+				},
+				{
+					"logical-name" : "module_util.mod"
+				},
+				{
+					"logical-name" : "nrtype.mod"
+				}
+			]
+		}
+	],
+	"version" : 0
+}

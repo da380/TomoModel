@@ -1,0 +1,22 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "GNU",
+	"compiler-id" : "GNU",
+	"compiler-simulate-id" : "",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"dir-cur-bld" : "/Users/ij264/Library/CloudStorage/GoogleDrive-ij264@cam.ac.uk/My Drive/PhD/da380/TomoModel/cmake-build-debug/src",
+	"dir-cur-src" : "/Users/ij264/Library/CloudStorage/GoogleDrive-ij264@cam.ac.uk/My Drive/PhD/da380/TomoModel/src",
+	"dir-top-bld" : "/Users/ij264/Library/CloudStorage/GoogleDrive-ij264@cam.ac.uk/My Drive/PhD/da380/TomoModel/cmake-build-debug",
+	"dir-top-src" : "/Users/ij264/Library/CloudStorage/GoogleDrive-ij264@cam.ac.uk/My Drive/PhD/da380/TomoModel",
+	"exports" : [],
+	"include-dirs" : [],
+	"language" : "Fortran",
+	"linked-target-dirs" : 
+	[
+		"/Users/ij264/Library/CloudStorage/GoogleDrive-ij264@cam.ac.uk/My Drive/PhD/da380/TomoModel/cmake-build-debug/src/CMakeFiles/TomoModelModules.dir"
+	],
+	"module-dir" : "/Users/ij264/Library/CloudStorage/GoogleDrive-ij264@cam.ac.uk/My Drive/PhD/da380/TomoModel/cmake-build-debug/mod",
+	"submodule-ext" : ".smod",
+	"submodule-sep" : "@"
+}

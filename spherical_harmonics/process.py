@@ -144,6 +144,6 @@ def calculate_observable(observable: str, l: int, l_max:int, density_anomaly_sh_
                                )
 
     # integrate along the radius for each order
-    integral = init_factor * scipy.integrate.simpson(integrand, radius_arr, axis=0)
+    integral = 1/init_factor * scipy.integrate.simpson(integrand, radius_arr, axis=0)
     assert_shape(integral, (2 * (l_max + 1),))
     return integral

@@ -1,0 +1,34 @@
+{
+	"revision" : 0,
+	"rules" : 
+	[
+		{
+			"outputs" : [],
+			"primary-output" : "src/CMakeFiles/TomoModelModules.dir/module_fourier.f90.o",
+			"provides" : 
+			[
+				{
+					"compiled-module-path" : "mod/module_fourier.mod",
+					"is-interface" : true,
+					"logical-name" : "module_fourier.mod"
+				}
+			],
+			"requires" : 
+			[
+				{
+					"logical-name" : "module_function.mod"
+				},
+				{
+					"logical-name" : "module_util.mod"
+				},
+				{
+					"logical-name" : "nrtype.mod"
+				},
+				{
+					"logical-name" : "nrutil.mod"
+				}
+			]
+		}
+	],
+	"version" : 0
+}

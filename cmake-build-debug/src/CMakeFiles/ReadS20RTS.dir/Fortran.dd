@@ -1,0 +1,3 @@
+ninja_dyndep_version = 1.0
+build src/CMakeFiles/ReadS20RTS.dir/ReadS20RTS.f90.o: dyndep | mod/module_fourier.mod mod/module_function.mod mod/module_model.mod mod/module_util.mod mod/nrtype.mod
+

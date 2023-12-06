@@ -1,0 +1,34 @@
+ninja_dyndep_version = 1.0
+build src/CMakeFiles/TomoModelModules.dir/nrtype.f90.o | mod/nrtype.mod: dyndep
+  restat = 1
+
+build src/CMakeFiles/TomoModelModules.dir/nrutil.f90.o | mod/nrutil.mod: dyndep | mod/nrtype.mod
+  restat = 1
+
+build src/CMakeFiles/TomoModelModules.dir/module_util.f90.o | mod/module_util.mod: dyndep | mod/nrtype.mod mod/nrutil.mod
+  restat = 1
+
+build src/CMakeFiles/TomoModelModules.dir/module_function.f90.o | mod/module_function.mod: dyndep | mod/nrtype.mod mod/nrutil.mod
+  restat = 1
+
+build src/CMakeFiles/TomoModelModules.dir/module_fourier.f90.o | mod/module_fourier.mod: dyndep | mod/module_function.mod mod/module_util.mod mod/nrtype.mod mod/nrutil.mod
+  restat = 1
+
+build src/CMakeFiles/TomoModelModules.dir/module_spline.f90.o | mod/module_spline.mod: dyndep | mod/nrtype.mod mod/nrutil.mod
+  restat = 1
+
+build src/CMakeFiles/TomoModelModules.dir/module_model.f90.o | mod/module_model.mod: dyndep | mod/module_fourier.mod mod/module_spline.mod mod/nrtype.mod mod/nrutil.mod
+  restat = 1
+
+build src/CMakeFiles/TomoModelModules.dir/rspln.f.o: dyndep
+
+build src/CMakeFiles/TomoModelModules.dir/rsple.f.o: dyndep
+
+build src/CMakeFiles/TomoModelModules.dir/prott.f.o: dyndep
+
+build src/CMakeFiles/TomoModelModules.dir/rotmx2.f.o: dyndep
+
+build src/CMakeFiles/TomoModelModules.dir/lagrange_poly.f90.o: dyndep | mod/nrtype.mod
+
+build src/CMakeFiles/TomoModelModules.dir/gll_library.f90.o: dyndep | mod/nrtype.mod
+

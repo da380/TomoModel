@@ -1,0 +1,20 @@
+{
+	"revision" : 0,
+	"rules" : 
+	[
+		{
+			"outputs" : [],
+			"primary-output" : "src/CMakeFiles/TomoModelModules.dir/nrtype.f90.o",
+			"provides" : 
+			[
+				{
+					"compiled-module-path" : "mod/nrtype.mod",
+					"is-interface" : true,
+					"logical-name" : "nrtype.mod"
+				}
+			],
+			"requires" : []
+		}
+	],
+	"version" : 0
+}
